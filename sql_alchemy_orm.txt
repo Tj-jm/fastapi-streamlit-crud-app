@@ -1,0 +1,8 @@
+| Action             | SQL                    | SQLAlchemy ORM                |
+| ------------------ | ---------------------- | ----------------------------- |
+| Select all         | `SELECT * FROM tasks;` | `db.query(Task).all()`        |
+| Select with filter | `WHERE id = 3`         | `.filter(Task.id == 3)`       |
+| Insert             | `INSERT INTO ...`      | `db.add(obj); db.commit()`    |
+| Update             | `UPDATE ... SET`       | `obj.attr = val; db.commit()` |
+| Delete             | `DELETE FROM ...`      | `db.delete(obj); db.commit()` |
+| Limit & Offset     | `LIMIT, OFFSET`        | `.limit().offset()`           |

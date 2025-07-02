@@ -1,0 +1,107 @@
+🚩 PYDANTIC MODEL CHEATSHEET FOR FASTAPI
+
+=============================
+1️⃣ What is Pydantic?
+- Data validation and parsing using Python type hints.
+- Used in FastAPI for request body validation, response serialization, and type safety.
+
+=============================
+2️⃣ Basic Pydantic Model
+
+from pydantic import BaseModel
+
+class User(BaseModel):
+    id: int
+    name: str
+    is_active: bool = True
+
+- Fields with types and default values.
+- Automatic validation.
+
+=============================
+3️⃣ Using with FastAPI Request Body
+
+@app.post("/users/")
+def create_user(user: User):
+    return user
+
+- Parses JSON request body into a User object.
+- Validates and serializes response.
+
+=============================
+4️⃣ Optional Fields
+
+from typing import Optional
+
+class User(BaseModel):
+    id: int
+    name: str
+    age: Optional[int] = None
+
+=============================
+5️⃣ Nested Models
+
+class Address(BaseModel):
+    city: str
+    country: str
+
+class User(BaseModel):
+    id: int
+    name: str
+    address: Address
+
+=============================
+6️⃣ orm_mode for SQLAlchemy
+
+class User(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+- Allows Pydantic to read SQLAlchemy model instances directly.
+
+=============================
+7️⃣ Response Models
+
+@app.get("/users/{user_id}", response_model=User)
+def get_user(user_id: int):
+    return user
+
+- FastAPI validates and serializes using the Pydantic model.
+
+=============================
+8️⃣ Field Validation and Constraints
+
+from pydantic import BaseModel, Field
+
+class Product(BaseModel):
+    name: str = Field(..., min_length=3, max_length=50)
+    price: float = Field(..., gt=0)
+
+=============================
+9️⃣ Example Input & Output Schemas
+
+class UserCreate(BaseModel):
+    name: str
+    age: Optional[int] = None
+
+class User(BaseModel):
+    id: int
+    name: str
+    age: Optional[int]
+
+    class Config:
+        orm_mode = True
+
+=============================
+✅ Summary Table
+
+- Basic model: class X(BaseModel): ...
+- Optional fields: Optional[str] = None
+- Defaults: field: int = 5
+- Nested models: field: OtherModel
+- orm_mode: Config.orm_mode = True
+- Field constraints: Field(..., min_length=3)
+- Response serialization: response_model=Model
